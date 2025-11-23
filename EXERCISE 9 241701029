@@ -1,0 +1,17 @@
+DECLARE
+    emp_count NUMBER;
+    vacancies NUMBER := 45;
+BEGIN
+   
+    SELECT COUNT(*)
+    INTO emp_count
+    FROM employees
+    WHERE department_id = 50;
+
+
+    IF emp_count < vacancies THEN
+        DBMS_OUTPUT.PUT_LINE('Department 50 has vacancies. Number of vacancies: ' || (vacancies - emp_count));
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Department 50 has no vacancies.');
+    END IF;
+END;
