@@ -1,0 +1,14 @@
+--EXERCISE 3
+-- 1. Add PRIMARY KEY to EMP(ID) named my_emp_id_pk
+ALTER TABLE EMP ADD CONSTRAINT my_emp_id_pk PRIMARY KEY (ID);
+
+-- 2. Add PRIMARY KEY to DEPT(ID) named my_dept_id_pk
+ALTER TABLE DEPT ADD CONSTRAINT my_dept_id_pk PRIMARY KEY (ID);
+
+-- 3. Add DEPT_ID column and foreign key my_emp_dept_id_fk referencing DEPT(ID)
+--ALTER TABLE EMP ADD DEPT_ID NUMBER(7);
+ALTER TABLE EMP ADD CONSTRAINT my_emp_dept_id_fk FOREIGN KEY (DEPT_ID) REFERENCES DEPT(ID);
+
+-- 4. Add COMMISSION column and CHECK constraint ensuring value > 0
+ALTER TABLE EMP ADD COMMISSION NUMBER(2,2);
+ALTER TABLE EMP ADD CONSTRAINT commission_gt_zero CHECK (COMMISSION > 0);
