@@ -1,17 +1,85 @@
-DECLARE
-    emp_count NUMBER;
-    vacancies NUMBER := 45;
-BEGIN
-   
-    SELECT COUNT(*)
-    INTO emp_count
-    FROM employees
-    WHERE department_id = 50;
+```sql
+1.
+SELECT e.last_name, e.department_id, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id;
 
+2.
+SELECT DISTINCT e.job_id, d.location_id
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE e.department_id = 80;
 
-    IF emp_count < vacancies THEN
-        DBMS_OUTPUT.PUT_LINE('Department 50 has vacancies. Number of vacancies: ' || (vacancies - emp_count));
-    ELSE
-        DBMS_OUTPUT.PUT_LINE('Department 50 has no vacancies.');
-    END IF;
-END;
+3.
+SELECT e.last_name, d.department_name, l.location_id, l.city
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE e.commission_pct IS NOT NULL;
+
+4.
+SELECT e.last_name, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+WHERE e.last_name LIKE '%a%';
+
+5.
+SELECT e.last_name, e.job_id, e.department_id, d.department_name
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN locations l ON d.location_id = l.location_id
+WHERE l.city = 'Toronto';
+
+6.
+SELECT e.last_name AS Employee,
+       e.employee_id AS Emp#,
+       m.last_name AS Manager,
+       m.employee_id AS Mgr#
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id;
+
+7.
+SELECT e.last_name AS Employee,
+       e.employee_id AS Emp#,
+       NVL(m.last_name,'No Manager') AS Manager,
+       NVL(TO_CHAR(m.employee_id),'--') AS Mgr#
+FROM employees e
+LEFT JOIN employees m ON e.manager_id = m.employee_id
+ORDER BY e.employee_id;
+
+8.
+SELECT e1.last_name AS Employee,
+       e1.department_id AS Dept#,
+       e2.last_name AS Colleague
+FROM employees e1
+JOIN employees e2 
+     ON e1.department_id = e2.department_id
+WHERE e1.last_name = '&employee_name';
+
+9.
+DESC JOB_GRADES;
+
+SELECT e.last_name AS Name,
+       e.job_id AS Job,
+       d.department_name,
+       e.salary,
+       g.grade_level
+FROM employees e
+JOIN departments d ON e.department_id = d.department_id
+JOIN job_grades g ON e.salary BETWEEN g.lowest_sal AND g.highest_sal;
+
+10.
+SELECT e.last_name, e.hire_date
+FROM employees e
+WHERE e.hire_date > 
+      (SELECT hire_date FROM employees WHERE last_name = 'Davies');
+
+11.
+SELECT e.last_name AS Employee,
+       e.hire_date AS "Emp Hired",
+       m.last_name AS Manager,
+       m.hire_date AS "Mgr Hired"
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE e.hire_date < m.hire_date;
+```
