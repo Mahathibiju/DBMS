@@ -1,0 +1,53 @@
+-- 1. Identify the errors in the given query
+
+-- Correct example using EMP table:
+SELECT id AS employee_id,
+       last_name,
+       12 * 1000 AS "ANNUAL SALARY"
+FROM EMP;
+
+
+-- 2. Show the structure of DEPT table and select all data from it
+DESC DEPT;
+SELECT * FROM DEPT;
+
+
+-- 3. Display last name, job code, hire date, and employee number,
+--    employee number first  
+--    (Your tables do NOT have job_id or hire_date, so using MY_EMPLOYEE)
+SELECT ID AS employee_number,
+       Last_name,
+       NULL AS job_code,
+       NULL AS hire_date
+FROM MY_EMPLOYEE;
+
+
+-- 4. Provide alias STARTDATE for hire date
+--    (Your tables do NOT have hire_date → using NULL placeholder)
+SELECT ID,
+       Last_name,
+       NULL AS STARTDATE
+FROM MY_EMPLOYEE;
+
+
+-- 5. Display UNIQUE job codes
+--    (Your schema has NO job_id column, so this must be adjusted)
+--    Showing unique USERID instead
+SELECT DISTINCT Userid
+FROM MY_EMPLOYEE;
+
+
+-- 6. Concatenate last_name with Userid (comma + space)
+--    Name the column EMPLOYEE_AND_TITLE
+SELECT Last_name || ', ' || Userid AS EMPLOYEE_AND_TITLE
+FROM MY_EMPLOYEE;
+
+
+-- 7. Display all data from MY_EMPLOYEE table as one comma-separated column
+--    Name the column THE_OUTPUT
+SELECT ID || ', ' ||
+       Last_name || ', ' ||
+       First_name || ', ' ||
+       Userid || ', ' ||
+       Salary AS THE_OUTPUT
+FROM MY_EMPLOYEE;
