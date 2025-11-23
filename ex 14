@@ -1,0 +1,41 @@
+-- ================================
+-- Step 1: Create sequence DEPT_ID_SEQ
+-- ================================
+CREATE SEQUENCE DEPT_ID_SEQ
+START WITH 200
+INCREMENT BY 10
+MAXVALUE 1000
+NOCYCLE;
+
+-- ================================
+-- Step 2: Display sequence info
+-- ================================
+SELECT SEQUENCE_NAME, MAX_VALUE, INCREMENT_BY, LAST_NUMBER
+FROM USER_SEQUENCES
+WHERE SEQUENCE_NAME = 'DEPT_ID_SEQ';
+
+-- ================================
+-- Step 3: Insert two rows into DEPT using sequence
+-- ================================
+-- Script: lab12_3.sql
+INSERT INTO DEPT (DEPT_ID, DEPT_NAME)
+VALUES (DEPT_ID_SEQ.NEXTVAL, 'Education');
+
+INSERT INTO DEPT (DEPT_ID, DEPT_NAME)
+VALUES (DEPT_ID_SEQ.NEXTVAL, 'Administration');
+
+-- Confirm insertions
+SELECT * FROM DEPT;
+
+-- ================================
+-- Step 4: Create non-unique index on EMP.DEPT_ID
+-- ================================
+CREATE INDEX EMP_DEPT_IDX
+ON EMP (DEPT_ID);
+
+-- ================================
+-- Step 5: Display indexes and uniqueness on EMP
+-- ================================
+SELECT INDEX_NAME, UNIQUENESS
+FROM USER_INDEXES
+WHERE TABLE_NAME = 'EMP';
