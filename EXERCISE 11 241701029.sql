@@ -1,7 +1,3 @@
-- 1. Uses for Views (DBA perspective) are documented here as comments
--- 1. Data Security: restrict access to specific columns/rows
--- 2. Simplified Querying: store complex queries as reusable virtual tables
--- 3. Data Independence: underlying tables can change without affecting users' queries
 
 -- 2. Create simple view for "New Age" songs
 CREATE OR REPLACE VIEW view_d_songs AS
