@@ -1,0 +1,66 @@
+4.
+SELECT ROUND(MAX(salary)) AS Maximum,
+       ROUND(MIN(salary)) AS Minimum,
+       ROUND(SUM(salary)) AS Sum,
+       ROUND(AVG(salary)) AS Average
+FROM employees;
+
+5.
+SELECT job_id,
+       ROUND(MIN(salary)) AS Minimum,
+       ROUND(MAX(salary)) AS Maximum,
+       ROUND(SUM(salary)) AS Sum,
+       ROUND(AVG(salary)) AS Average
+FROM employees
+GROUP BY job_id;
+
+6.
+SELECT COUNT(*) 
+FROM employees
+WHERE job_id = '&job_title';
+
+7.
+SELECT COUNT(DISTINCT manager_id) AS "Number of Managers"
+FROM employees
+WHERE manager_id IS NOT NULL;
+
+8.
+SELECT (MAX(salary) - MIN(salary)) AS DIFFERENCE
+FROM employees;
+
+9.
+SELECT manager_id,
+       MIN(salary) AS lowest_salary
+FROM employees
+WHERE manager_id IS NOT NULL
+GROUP BY manager_id
+HAVING MIN(salary) > 6000
+ORDER BY lowest_salary DESC;
+
+10.
+SELECT COUNT(*) AS total_employees,
+       SUM(CASE WHEN EXTRACT(YEAR FROM hire_date)=1995 THEN 1 END) AS hired_1995,
+       SUM(CASE WHEN EXTRACT(YEAR FROM hire_date)=1996 THEN 1 END) AS hired_1996,
+       SUM(CASE WHEN EXTRACT(YEAR FROM hire_date)=1997 THEN 1 END) AS hired_1997,
+       SUM(CASE WHEN EXTRACT(YEAR FROM hire_date)=1998 THEN 1 END) AS hired_1998
+FROM employees;
+
+11.
+SELECT job_id,
+       SUM(CASE WHEN department_id = 20 THEN salary END) AS dept20,
+       SUM(CASE WHEN department_id = 50 THEN salary END) AS dept50,
+       SUM(CASE WHEN department_id = 80 THEN salary END) AS dept80,
+       SUM(CASE WHEN department_id = 90 THEN salary END) AS dept90,
+       SUM(salary) AS total_salary
+FROM employees
+WHERE department_id IN (20,50,80,90)
+GROUP BY job_id;
+
+12.
+SELECT d.department_name || '-' || l.city AS name_location,
+       COUNT(e.employee_id) AS number_of_people,
+       ROUND(AVG(e.salary), 2) AS salary
+FROM departments d
+JOIN locations l ON d.location_id = l.location_id
+LEFT JOIN employees e ON d.department_id = e.department_id
+GROUP BY d.department_name, l.city;
