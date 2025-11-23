@@ -1,0 +1,75 @@
+-- ===============================
+-- Step 1 & 2: Create users & grant system privileges
+-- ===============================
+CREATE USER user1 IDENTIFIED BY password1;
+CREATE USER user2 IDENTIFIED BY password2;
+
+GRANT CREATE SESSION, CREATE TABLE TO user1;
+GRANT CREATE SESSION, CREATE TABLE TO user2;
+
+-- ===============================
+-- Step 3 & 4: Role for easier privilege management
+-- ===============================
+CREATE ROLE common_role;
+GRANT CREATE SESSION, CREATE TABLE TO common_role;
+GRANT common_role TO user1, user2;
+
+-- ===============================
+-- Step 5: Change passwords (if needed)
+-- ===============================
+ALTER USER user1 IDENTIFIED BY newpassword1;
+ALTER USER user2 IDENTIFIED BY newpassword2;
+
+-- ===============================
+-- Step 6: Grant table privileges
+-- ===============================
+-- Assume DEPARTMENTS table already exists for user1 and user2
+GRANT SELECT, INSERT, UPDATE, DELETE ON user1.DEPARTMENTS TO user2;
+GRANT SELECT, INSERT, UPDATE, DELETE ON user2.DEPARTMENTS TO user1;
+
+-- ===============================
+-- Step 7: Query all rows in DEPARTMENTS table
+-- ===============================
+SELECT * FROM user1.DEPARTMENTS;
+SELECT * FROM user2.DEPARTMENTS;
+
+-- ===============================
+-- Step 8: Insert new rows
+-- ===============================
+-- Team 1 inserts Education
+INSERT INTO user1.DEPARTMENTS (DEPARTMENT_ID, DEPARTMENT_NAME)
+VALUES (500, 'Education');
+
+-- Team 2 inserts Human Resources
+INSERT INTO user2.DEPARTMENTS (DEPARTMENT_ID, DEPARTMENT_NAME)
+VALUES (510, 'Human Resources');
+
+COMMIT;
+
+-- Query the other team's DEPARTMENTS table
+SELECT * FROM user2.DEPARTMENTS;
+SELECT * FROM user1.DEPARTMENTS;
+
+-- ===============================
+-- Step 9: Query USER_TABLES metadata
+-- ===============================
+SELECT * FROM user1.USER_TABLES;
+SELECT * FROM user2.USER_TABLES;
+
+-- ===============================
+-- Step 10: Revoke SELECT privilege from the other team
+-- ===============================
+REVOKE SELECT ON user1.DEPARTMENTS FROM user2;
+REVOKE SELECT ON user2.DEPARTMENTS FROM user1;
+
+-- ===============================
+-- Step 11: Delete inserted rows and commit
+-- ===============================
+DELETE FROM user1.DEPARTMENTS WHERE DEPARTMENT_ID = 500;
+DELETE FROM user2.DEPARTMENTS WHERE DEPARTMENT_ID = 510;
+
+COMMIT;
+
+-- Verify deletion
+SELECT * FROM user1.DEPARTMENTS;
+SELECT * FROM user2.DEPARTMENTS;
